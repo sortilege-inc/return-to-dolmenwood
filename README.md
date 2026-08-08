@@ -15,9 +15,10 @@ browns, oat-cloth cream, dappled gold), with antique **IM Fell English** display
 | Path | What it is |
 |------|------------|
 | `index.html` | Home — masthead, the three table links, the map hero, section grid |
-| `character/` | Fitchwick Peckhold's dossier — scores, saves, skills, runes, gear |
+| `character/` | Fitchwick Peckhold's dossier — scores, saves, skills, runes, arms & gear |
+| `play/` | Interactive live sheet — ability/save/skill rollers, equippable weapons with attack + damage, a dice tray, and `localStorage` trackers (HP, exhaustion, coin, rune uses). Data is the JSON blob in `play/index.html`; logic in `sheet.js` |
 | `atlas/` | The Dolmenwood map + a gazetteer of its settlements, keeps, and wilds |
-| `rules/` | The Dolmenwood rules reference, house rules, and how to join |
+| `rules/` | The Dolmenwood rules reference, a local copy of the house rules, and how to join |
 | `chronicle/` | Expedition record (scaffolded — play has not begun) |
 | `dolmenwood.css` | The whole theme |
 | `assets/` | Optimized map + portrait + token (webp), favicon |

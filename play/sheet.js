@@ -23,6 +23,7 @@
       exhaustion: 0,
       coins: { cp: 0, sp: 0, gp: 0, pp: 0 },
       runeUses: {},
+      equipped: null,
       log: []
     };
     try {
@@ -32,6 +33,8 @@
         base.exhaustion = clampNum(saved.exhaustion, 0, 999, 0);
         if (saved.coins) base.coins = Object.assign(base.coins, saved.coins);
         if (saved.runeUses) base.runeUses = saved.runeUses;
+        var nw = (DATA.weapons || []).length;
+        if (typeof saved.equipped === "number" && saved.equipped >= 0 && saved.equipped < nw) base.equipped = saved.equipped;
         if (Array.isArray(saved.log)) base.log = saved.log.slice(0, 40);
       }
     } catch (e) { /* ignore corrupt store */ }
@@ -52,6 +55,13 @@
     var rolls = [], sum = 0;
     for (var i = 0; i < n; i++) { var r = d(sides); rolls.push(r); sum += r; }
     return { rolls: rolls, sum: sum };
+  }
+  // melee attack + damage both apply the Strength modifier (0 for Fitchwick)
+  var MELEE_MOD = (DATA.abilities.strength && DATA.abilities.strength.mod) || 0;
+  function parseDamage(str) {
+    var m = /^\s*(\d*)\s*d\s*(\d+)\s*([+-]\s*\d+)?\s*$/i.exec(str || "");
+    if (!m) return { n: 1, sides: 6, mod: 0 };
+    return { n: m[1] ? parseInt(m[1], 10) : 1, sides: parseInt(m[2], 10), mod: m[3] ? parseInt(m[3].replace(/\s/g, ""), 10) : 0 };
   }
 
   /* ---- labels ---- */
@@ -89,6 +99,15 @@
       return '<button class="rollbtn skill" data-roll="skill" data-key="' + k + '" title="' + esc(s.desc) + '">' +
         '<span class="lbl">' + (SKILL_LABEL[k] || k) + '</span>' +
         '<span class="val">' + s.target + '<span style="font-size:.6em">-in-6</span></span></button>';
+    }).join("");
+
+    var weaponRows = (DATA.weapons || []).map(function (w, i) {
+      var eq = state.equipped === i;
+      return '<div class="weap' + (eq ? " on" : "") + '">' +
+        '<div class="weap-main"><span class="wn">' + esc(w.name) + '</span>' +
+        '<span class="wmeta">' + esc(w.damage) + ' · ' + esc(w.qualities) + '</span></div>' +
+        '<button class="wequip" data-equip="' + i + '">' + (eq ? "✓ In hand" : "Equip") + '</button>' +
+        '</div>';
     }).join("");
 
     var runeCards = (DATA.runes || []).map(function (rn, i) {
@@ -149,10 +168,13 @@
         '<div class="sc"><h2>Saving Throws <span class="hint">tap — roll d20, succeed on ≥ value</span></h2>' +
           '<div class="btn-grid saves-grid">' + saveBtns + '</div></div>' +
 
+        /* weapons */
+        (weaponRows ? '<div class="sc"><h2>Weapons <span class="hint">equip one to attack</span></h2>' + weaponRows + '</div>' : '') +
+
         /* attack + skills */
-        '<div class="sc"><h2>Actions</h2>' +
-          '<button class="actbtn" data-roll="attack" style="margin-bottom:.9rem">⚔ Attack Roll — d20 ' + signed(DATA.attackBonus) + '</button>' +
-          '<h2 style="border:0;margin:.2rem 0 .7rem;padding:0">Skills <span class="hint">tap — roll d6, succeed on ≤ target</span></h2>' +
+        '<div class="sc"><h2>Attack &amp; Skills</h2>' +
+          '<div id="equippedBox" class="equipped-box"></div>' +
+          '<h2 style="border:0;margin:1.1rem 0 .7rem;padding:0">Skills <span class="hint">tap — roll d6, succeed on ≤ target</span></h2>' +
           '<div class="btn-grid skills-grid">' + skillBtns + '</div></div>' +
 
         /* runes */
@@ -189,6 +211,7 @@
 
     updateHpBar();
     renderLog();
+    renderEquipped();
     bind();
   }
 
@@ -252,11 +275,54 @@
     setReadout((SKILL_LABEL[key] || key), r, "d6 · " + s.target + "-in-6 · need ≤ " + s.target, verdict);
     pushLog((SKILL_LABEL[key] || key) + " (" + s.target + "-in-6)", r + " " + (ok ? "✓" : "✗"), ok ? "hit" : "miss");
   }
-  function rollAttack() {
-    var r = d(20), tot = r + DATA.attackBonus;
+  function rollAttack(wi) {
+    var w = (typeof wi === "number") ? DATA.weapons[wi] : null;
+    var name = w ? w.name : "Unarmed";
+    var bonus = DATA.attackBonus + MELEE_MOD;
+    var r = d(20), tot = r + bonus;
     var nat = r === 20 ? " · natural 20!" : (r === 1 ? " · natural 1" : "");
-    setReadout("Attack Roll", tot, "d20 (" + r + ") " + signed(DATA.attackBonus) + nat + " · vs target AC", null);
-    pushLog("Attack (d20" + signed(DATA.attackBonus) + ")", String(tot), r === 20 ? "hit" : (r === 1 ? "miss" : ""));
+    setReadout(name + " Attack", tot, "d20 (" + r + ") " + signed(bonus) + nat + " · vs target AC", null);
+    pushLog(name + " attack (d20" + signed(bonus) + ")", String(tot), r === 20 ? "hit" : (r === 1 ? "miss" : ""));
+  }
+  function rollDamage(wi) {
+    var w = DATA.weapons[wi]; if (!w) return;
+    var p = parseDamage(w.damage);
+    var res = rollN(p.n, p.sides);
+    var tot = Math.max(1, res.sum + p.mod + MELEE_MOD);
+    var extra = p.mod + MELEE_MOD;
+    var detail = (p.n > 1 ? "[" + res.rolls.join(", ") + "]" : w.damage) + (extra ? " " + signed(extra) : "") + " · min 1";
+    setReadout(w.name + " Damage", tot, detail, null);
+    pushLog(w.name + " damage (" + w.damage + (extra ? signed(extra) : "") + ")", String(tot), "");
+  }
+  function setEquipped(i) {
+    state.equipped = (state.equipped === i) ? null : i;
+    save();
+    renderEquipped();
+    root.querySelectorAll(".weap").forEach(function (el, idx) {
+      var on = state.equipped === idx;
+      el.classList.toggle("on", on);
+      var b = el.querySelector(".wequip");
+      if (b) b.textContent = on ? "✓ In hand" : "Equip";
+    });
+  }
+  function renderEquipped() {
+    var box = document.getElementById("equippedBox");
+    if (!box) return;
+    var bonus = DATA.attackBonus + MELEE_MOD;
+    if (state.equipped === null || !DATA.weapons[state.equipped]) {
+      box.innerHTML = '<div class="eq-name muted">Nothing in hand — equip a weapon above.</div>' +
+        '<button class="actbtn ghost" id="unarmedBtn">✊ Unarmed Attack — d20 ' + signed(bonus) + '</button>';
+      document.getElementById("unarmedBtn").onclick = function () { rollAttack(null); };
+      return;
+    }
+    var w = DATA.weapons[state.equipped];
+    box.innerHTML = '<div class="eq-name">In hand — <b>' + esc(w.name) + '</b> · ' + esc(w.damage) + ' · ' + esc(w.qualities) + '</div>' +
+      '<div class="eq-btns">' +
+        '<button class="actbtn" id="atkBtn">⚔ Attack — d20 ' + signed(bonus) + '</button>' +
+        '<button class="actbtn alt" id="dmgBtn">🩸 Damage — ' + esc(w.damage) + '</button>' +
+      '</div>';
+    document.getElementById("atkBtn").onclick = function () { rollAttack(state.equipped); };
+    document.getElementById("dmgBtn").onclick = function () { rollDamage(state.equipped); };
   }
   function rollPlainDie(sides, count) {
     count = count || 1;
@@ -296,8 +362,12 @@
         if (kind === "ability") rollAbility(key);
         else if (kind === "save") rollSave(key);
         else if (kind === "skill") rollSkill(key);
-        else if (kind === "attack") rollAttack();
       });
+    });
+
+    // equip weapons
+    root.querySelectorAll("[data-equip]").forEach(function (btn) {
+      btn.addEventListener("click", function () { setEquipped(parseInt(btn.getAttribute("data-equip"), 10)); });
     });
 
     // dice tray
