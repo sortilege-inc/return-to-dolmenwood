@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<title>Fitchwick Peckhold — Character Sheet — Return to Dolmenwood</title>
+<meta name="description" content="The living character sheet for Fitchwick Peckhold — a Human Enchanter of Dolmenwood. Ability checks, saves, skills, runes, and a dice roller for the table.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dolmenwood.css">
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body class="play-body">
+<div class="play-bar">
+  <span class="brand">Return to Dolmenwood</span>
+  <a href="../character/index.html">‹ Dossier</a>
+  <span class="spacer"></span>
+  <a href="../rules/index.html">Rules</a>
+  <a href="../index.html">Home</a>
+</div>
+
+<main id="sheet" class="sheet-wrap"></main>
+
+<script id="sheet-data" type="application/json">
+{
+  "id": "fitchwick",
+  "name": "Fitchwick Peckhold",
+  "kindred": "Human",
+  "class": "Enchanter",
+  "level": 2,
+  "alignment": "Chaotic",
+  "portrait": "../assets/fitchwick-portrait.webp",
+  "token": "../assets/fitchwick-token.webp",
+  "primeAbilities": ["charisma", "intelligence"],
+  "hp": 13,
+  "ac": 12,
+  "attackBonus": 0,
+  "speed": { "round": 40, "exploring": 120, "overland": 24 },
+  "size": "Medium",
+  "languages": ["Woldish"],
+  "xp": { "value": 1750, "next": 2000 },
+  "loyalty": 7,
+  "abilities": {
+    "strength":     { "score": 7,  "mod": 0 },
+    "intelligence": { "score": 11, "mod": 0 },
+    "wisdom":       { "score": 8,  "mod": 0 },
+    "dexterity":    { "score": 8,  "mod": 0 },
+    "constitution": { "score": 12, "mod": 0 },
+    "charisma":     { "score": 13, "mod": 0 }
+  },
+  "saves": {
+    "doom":  { "target": 11, "desc": "Death, poison, and mortal peril" },
+    "ray":   { "target": 12, "desc": "Rays and blasts of magical energy" },
+    "hold":  { "target": 13, "desc": "Paralysis, petrification, and being held" },
+    "blast": { "target": 16, "desc": "Explosions, dragon-breath, and area blasts" },
+    "spell": { "target": 14, "desc": "Spells, rods, staves, and other magic" }
+  },
+  "skills": {
+    "listen":      { "target": 6, "desc": "Hear faint sounds beyond a door or in the dark" },
+    "search":      { "target": 6, "desc": "Find hidden things and secret constructions" },
+    "survival":    { "target": 6, "desc": "Endure and find your way in the wilds" },
+    "detectMagic": { "target": 6, "desc": "Sense the presence of enchantment" }
+  },
+  "runes": [
+    {
+      "name": "Deathly Blossom",
+      "magnitude": "Lesser",
+      "lines": [
+        "<strong>Duration:</strong> 1 Turn or until used",
+        "<strong>Range:</strong> Appears in caster’s hand",
+        "An exquisite white rose is conjured in the caster’s hand.",
+        "<strong>Proffering the rose:</strong> One who smells the rose must Save Versus Doom or fall into a deep faint—appearing dead—for 1d6 Turns.",
+        "<strong>Duration:</strong> The flower remains in existence until it is used or 1 Turn passes.",
+        "<strong>Restrictions:</strong> Only living creatures are affected."
+      ]
+    }
+  ],
+  "gear": [
+    { "name": "Leather", "tag": "Armour · AC 12 · worn" },
+    { "name": "Tent", "tag": "" },
+    { "name": "Clothes, common", "tag": "" },
+    { "name": "Torches", "tag": "×3" },
+    { "name": "Shovel", "tag": "" },
+    { "name": "Marbles", "tag": "" }
+  ],
+  "encumbrance": { "max": 40 }
+}
+</script>
+
+<script src="sheet.js"></script>
+</body>
+</html>
