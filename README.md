@@ -36,7 +36,8 @@ browns, oat-cloth cream, dappled gold), with antique **IM Fell English** display
 
 - `ingest/` is git-ignored (source map, portrait, token, Foundry actor JSON).
 - Character stats come from the Foundry VTT actor export. Fitchwick is a **Human Enchanter,
-  level 2, chaotic** — the actor's stale `class: "fighter"` field is overridden by the
-  Enchanter *class item* and matching XP threshold (1,750). The **Deathly Blossom** rune text
-  is reproduced verbatim from Dolmenwood.
+  level 1, chaotic** (0 XP; 1,750 to reach level 2) — the actor's stale `class: "fighter"`
+  field is overridden by the Enchanter *class item*. Starting HP is 7 (max at first level per
+  the campaign house rules). The **Deathly Blossom** rune text is reproduced verbatim from
+  Dolmenwood.
 - Gazetteer blurbs are sketched from the map; deep site lore is left to the Loremaster.

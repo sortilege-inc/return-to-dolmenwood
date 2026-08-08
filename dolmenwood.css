@@ -364,3 +364,20 @@ blockquote{
 
 /* epigraph */
 .epigraph{ font-family:var(--disp); font-style:italic; color:var(--moon-dim); font-size:1.22rem; line-height:1.55; text-align:center; max-width:56ch; margin:0.4rem auto 2rem; padding-bottom:1.4rem; border-bottom:1px solid var(--gold-soft); }
+
+/* tables (inside parchment panels) */
+.tablewrap{ overflow-x:auto; margin:1.3rem 0; border:1px solid var(--edge-hair); border-radius:2px; }
+.tablewrap table{ border-collapse:collapse; width:100%; font-size:0.95rem; }
+.tablewrap th{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.74rem; color:var(--brick); background:rgba(176,134,47,0.12); padding:0.5rem 0.8rem; text-align:left; border-bottom:1px solid var(--edge-hair); }
+.tablewrap td{ padding:0.45rem 0.8rem; border-bottom:1px solid var(--edge-soft); color:var(--ink-2); }
+.tablewrap tr:last-child td{ border-bottom:0; }
+
+/* attribution banner (mirrored content) */
+.attrib{
+  display:flex; gap:0.9rem; align-items:flex-start;
+  background:rgba(124,82,144,0.1); border:1px solid rgba(124,82,144,0.4); border-left:3px solid var(--toadstool);
+  border-radius:2px; padding:0.9rem 1.1rem; margin:0 0 1.6rem; font-size:0.92rem; line-height:1.5; color:var(--ink-2);
+}
+.attrib .seal{ font-size:1.4rem; color:var(--toadstool); line-height:1; margin-top:0.05rem; }
+.attrib b{ color:var(--ink); }
+.attrib a{ color:var(--brick-deep); }
