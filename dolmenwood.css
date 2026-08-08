@@ -1,0 +1,366 @@
+/* ============================================================
+   RETURN TO DOLMENWOOD — a West Marches chronicle
+   dolmenwood.css — mossy dark, parchment cartouche, and
+   the crimson ink of an old map label.
+
+   Palette drawn from the Dolmenwood map (deep forest greens,
+   acid-green wold, blue rivers, brick-red labels, toadstool
+   purple) and Fitchwick's portrait (earthy browns, oat-cloth
+   cream, dappled gold light through the leaves).
+   ============================================================ */
+
+:root{
+  /* --- the gloomy wold (dark grounds) --- */
+  --wold:      #12160e;   /* deepest shade — page base */
+  --wold-2:    #191e13;   /* raised dark bands (nav, hero frame) */
+  --wold-3:    #232a19;   /* lifted dark panels */
+  --bark:      #2b2416;   /* warm brown-black */
+
+  /* --- parchment (map cartouche cream) --- */
+  --vellum:    #e7dcc0;
+  --vellum-2:  #f0e7cf;   /* raised paper */
+  --vellum-3:  #d8caa6;   /* sunken / edges */
+
+  /* --- ink (text on parchment) --- */
+  --ink:       #2a2216;
+  --ink-2:     #473a26;
+  --ink-soft:  #6a5a41;
+  --ink-dim:   #8a795c;
+
+  /* --- ink on the dark (text on wold) --- */
+  --moon:      #e9e0cb;   /* pale text on dark */
+  --moon-dim:  #b9b096;
+  --moon-faint:#8f8a72;
+
+  /* --- accents --- */
+  --brick:      #a8402c;   /* the red of a map label */
+  --brick-deep: #7e2c1e;
+  --brick-soft: rgba(168,64,44,0.16);
+  --moss:       #4d6b39;   /* woodland green */
+  --moss-lit:   #7c9a52;   /* acid wold-grass */
+  --moss-deep:  #2c3d22;
+  --toadstool:  #7c5290;   /* fairy / fungus purple */
+  --toadstool-lit:#a578bd;
+  --gold:       #b0862f;   /* dappled light */
+  --gold-lit:   #d8b25e;
+  --gold-soft:  rgba(176,134,47,0.5);
+  --river:      #5a7f96;   /* map water */
+
+  --edge:      rgba(90,70,30,0.30);
+  --edge-soft: rgba(90,70,30,0.18);
+  --edge-hair: rgba(90,70,30,0.42);
+  --edge-dark: rgba(0,0,0,0.34);
+
+  --shadow:      0 18px 44px rgba(0,0,0,0.5);
+  --shadow-soft: 0 8px 22px rgba(0,0,0,0.34);
+
+  /* IM Fell — antique woodcut printing; the Dolmenwood old-book feel */
+  --serif:  "EB Garamond", Georgia, "Times New Roman", serif;
+  --disp:   "IM Fell English", "EB Garamond", Georgia, serif;
+  --black:  "UnifrakturMaguntia", "IM Fell English", serif; /* blackletter ornament */
+  --caps:   "Cinzel", "Trajan Pro", Georgia, serif;
+}
+
+/* ------------------------------------------------------------ base */
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  font-family:var(--serif);
+  font-size:19px;
+  line-height:1.66;
+  color:var(--moon);
+  background-color:var(--wold);
+  background-image:
+    radial-gradient(1200px 720px at 82% -8%, rgba(124,82,144,0.12), transparent 60%),
+    radial-gradient(1000px 900px at 4% 2%, rgba(124,154,82,0.10), transparent 55%),
+    radial-gradient(1400px 1200px at 50% 130%, rgba(0,0,0,0.55), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-attachment:fixed, fixed, fixed, scroll;
+  min-height:100vh;
+}
+
+/* ------------------------------------------------------------ nav */
+.topnav{
+  position:sticky; top:0; z-index:50;
+  display:flex; flex-wrap:wrap; align-items:center; gap:0.1rem 1.4rem;
+  padding:0.72rem clamp(1rem,4vw,3rem);
+  background:linear-gradient(180deg, rgba(18,22,14,0.98), rgba(18,22,14,0.9));
+  border-bottom:2px solid var(--moss);
+  box-shadow:0 2px 0 rgba(176,134,47,0.28), 0 12px 26px rgba(0,0,0,0.5);
+  backdrop-filter:blur(3px);
+}
+.topnav .brand{
+  font-family:var(--caps); font-weight:600; letter-spacing:0.22em;
+  text-transform:uppercase; font-size:0.8rem; color:var(--gold-lit);
+  margin-right:auto; white-space:nowrap;
+}
+.topnav .brand::before{ content:"❦"; color:var(--brick); margin-right:0.5em; font-size:1em; }
+.topnav a{
+  font-family:var(--caps); font-size:0.78rem; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--moon-dim); text-decoration:none;
+  padding:0.15rem 0; border-bottom:2px solid transparent; transition:.18s;
+}
+.topnav a:hover{ color:#fff; }
+.topnav a.active{ color:#fff; border-bottom-color:var(--brick); }
+.topnav a.ext{ color:var(--toadstool-lit); }
+.topnav a.ext:hover{ color:#e6cff2; }
+
+/* ------------------------------------------------------------ shell */
+.wrap{ max-width:1180px; margin:0 auto; padding:0 clamp(1rem,4vw,3rem) 6rem; }
+.col{ max-width:780px; margin:0 auto; }
+
+/* ------------------------------------------------------------ masthead */
+.masthead{
+  text-align:center;
+  padding:clamp(2.4rem,7vw,5rem) 1rem clamp(1.4rem,4vw,2.4rem);
+  position:relative;
+}
+.eyebrow{
+  font-family:var(--caps); text-transform:uppercase;
+  letter-spacing:0.34em; font-size:0.8rem; font-weight:600; color:var(--brick);
+  margin:0 0 1rem; padding-left:0.34em;
+}
+.eyebrow::before,.eyebrow::after{ content:"·"; margin:0 0.7em; color:var(--gold); }
+.masthead h1{
+  font-family:var(--disp); font-weight:400;
+  font-size:clamp(2.9rem,9vw,6rem); line-height:0.98;
+  margin:0; color:var(--vellum); letter-spacing:0.01em;
+  text-shadow:0 2px 18px rgba(0,0,0,0.6);
+}
+.masthead h1 .bl{ font-family:var(--black); font-weight:400; }
+.masthead .sub{
+  font-family:var(--disp); font-style:italic; font-weight:400;
+  font-size:clamp(1.15rem,2.6vw,1.55rem); color:var(--moon-dim);
+  margin:1rem auto 0; max-width:48ch;
+}
+.masthead .kicker{
+  font-family:var(--caps); letter-spacing:0.22em; text-transform:uppercase;
+  font-size:0.74rem; color:var(--moon-faint); margin-top:1.1rem;
+}
+
+/* cartouche framing (double rule, like a map label) */
+.cartouche{ position:relative; display:inline-block; padding:1.1rem 2.6rem; }
+.cartouche::before, .cartouche::after{
+  content:""; position:absolute; left:0; right:0; pointer-events:none; border:1px solid var(--gold-soft);
+}
+.cartouche::before{ top:0; bottom:0; }
+.cartouche::after{ top:5px; bottom:5px; left:5px; right:5px; border-color:rgba(233,224,203,0.14); }
+
+.flourish{ text-align:center; color:var(--brick); margin:2.1rem 0; font-size:1rem; letter-spacing:0.7em; }
+.flourish::before{ content:"❦"; }
+
+/* ------------------------------------------------------------ join / external link band */
+.join{
+  display:grid; gap:0.9rem; grid-template-columns:repeat(3,1fr);
+  margin:2rem auto 0.5rem; max-width:900px;
+}
+@media (max-width:680px){ .join{ grid-template-columns:1fr; } }
+.join a{
+  display:flex; flex-direction:column; gap:0.15rem; text-decoration:none;
+  padding:1rem 1.2rem; border-radius:3px; position:relative; overflow:hidden;
+  background:linear-gradient(180deg, var(--wold-3), var(--wold-2));
+  border:1px solid var(--edge); transition:.18s;
+}
+.join a::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--brick); transition:.2s; }
+.join a:hover{ transform:translateY(-2px); box-shadow:var(--shadow-soft); border-color:var(--gold-soft); }
+.join a.foundry::before{ background:var(--toadstool); }
+.join a.marches::before{ background:var(--moss-lit); }
+.join a.rules::before{ background:var(--gold); }
+.join .jt{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.12em; font-size:0.86rem; color:var(--vellum); font-weight:600; }
+.join .jt .ico{ margin-right:0.4em; }
+.join .jd{ font-family:var(--serif); font-size:0.9rem; color:var(--moon-faint); line-height:1.4; }
+.join .jt::after{ content:"↗"; color:var(--moon-faint); font-size:0.8em; margin-left:0.4em; }
+
+/* ------------------------------------------------------------ hero image */
+.hero-img{
+  width:100%; max-height:520px; object-fit:cover;
+  border:1px solid var(--gold-soft); box-shadow:var(--shadow); margin-bottom:2rem;
+  filter:saturate(0.95) brightness(0.96);
+}
+.hero-link{ display:block; text-decoration:none; position:relative; }
+.hero-link .hero-cap{
+  position:absolute; left:0; right:0; bottom:0; padding:1.3rem 1.2rem 0.9rem;
+  font-family:var(--caps); text-transform:uppercase; letter-spacing:0.18em; font-size:0.8rem;
+  color:var(--vellum); text-align:center;
+  background:linear-gradient(0deg, rgba(9,11,7,0.86), transparent);
+}
+
+/* ------------------------------------------------------------ panels */
+.panel{
+  background:linear-gradient(180deg, var(--vellum-2), var(--vellum));
+  color:var(--ink);
+  border:1px solid var(--edge-hair);
+  border-radius:2px;
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.4);
+  padding:clamp(1.6rem,4vw,3rem);
+  position:relative;
+}
+.panel::after{ content:""; position:absolute; inset:7px; border:1px solid var(--edge-soft); border-radius:1px; pointer-events:none; }
+.panel > *:first-child{ margin-top:0; }
+.panel > *:last-child{ margin-bottom:0; }
+
+/* ------------------------------------------------------------ prose */
+.col > p, .lede, .col .flourish{ color:var(--moon); }
+.lede{ font-size:1.2rem; color:var(--moon); }
+.lede::first-letter{
+  font-family:var(--black); font-weight:400; float:left; font-size:4.4rem; line-height:0.7;
+  padding:0.28rem 0.5rem 0 0; color:var(--brick);
+}
+.col a, .lede a{ color:var(--gold-lit); text-decoration:none; border-bottom:1px solid var(--gold-soft); }
+.col a:hover{ color:#fff; border-bottom-color:var(--gold-lit); }
+.col em{ color:var(--moon-dim); }
+
+/* headings + prose inside parchment panels (article) */
+article h1,article h2,article h3,article h4{
+  font-family:var(--disp); font-weight:400; color:var(--ink); line-height:1.2;
+}
+article h2{
+  font-size:1.78rem; margin:2.4rem 0 0.9rem; letter-spacing:0.01em;
+  padding-bottom:0.4rem; border-bottom:1px solid var(--gold-soft);
+}
+article h2 .k, .kmark{ color:var(--brick); }
+article h3{ font-size:1.4rem; margin:1.7rem 0 0.5rem; color:var(--ink); }
+article h4{
+  font-family:var(--caps); text-transform:uppercase; letter-spacing:0.12em;
+  font-size:0.86rem; color:var(--brick); margin:1.3rem 0 0.35rem;
+}
+article p{ margin:0 0 1.05rem; }
+article ul,article ol{ margin:0.4rem 0 1.15rem; padding-left:1.3rem; }
+article li{ margin:0.35rem 0; }
+article ul li::marker{ color:var(--brick); }
+article strong{ color:var(--ink); font-weight:600; }
+article em{ color:var(--ink-2); }
+article a{ color:var(--brick-deep); text-decoration:none; border-bottom:1px solid rgba(126,44,30,0.34); }
+article a:hover{ color:var(--brick); background:var(--brick-soft); }
+article hr{ border:0; border-top:1px solid var(--gold-soft); margin:2rem 0; }
+blockquote{
+  font-family:var(--disp); font-style:italic; font-size:1.16rem; color:var(--ink-2);
+  border-left:3px solid var(--brick); margin:1.4rem 0; padding:0.2rem 0 0.2rem 1.3rem;
+}
+
+/* ------------------------------------------------------------ portraits */
+.portrait-frame{
+  float:right; width:min(320px,44%); margin:0.3rem 0 1.4rem 1.8rem;
+  padding:9px; background:var(--vellum-3); border:1px solid var(--gold-soft); box-shadow:var(--shadow);
+  position:relative;
+}
+.portrait-frame::after{ content:""; position:absolute; inset:4px; border:1px solid var(--edge-soft); pointer-events:none; }
+.portrait-frame img{ display:block; width:100%; height:auto; background:var(--vellum); }
+.portrait-frame figcaption{
+  font-family:var(--caps); text-transform:uppercase; letter-spacing:0.16em;
+  font-size:0.68rem; color:var(--ink-soft); text-align:center; margin-top:0.55rem;
+}
+@media (max-width:620px){ .portrait-frame{ float:none; width:100%; margin:0 0 1.5rem; } }
+
+/* ------------------------------------------------------------ meta + chips */
+.meta{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.78rem; color:var(--ink-soft); margin:0.4rem 0 0; }
+.meta .sep{ color:var(--gold); margin:0 0.6em; }
+.tagrow{ display:flex; flex-wrap:wrap; gap:0.45rem; margin:0.5rem 0 1.4rem; }
+.chip{
+  font-family:var(--caps); font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--ink-2); background:rgba(176,134,47,0.14); border:1px solid var(--gold-soft);
+  border-radius:2px; padding:0.16rem 0.62rem;
+}
+.chip.on-dark{ color:var(--moon-dim); background:rgba(124,154,82,0.12); border-color:var(--edge); }
+
+/* ------------------------------------------------------------ card grids */
+.grid{ display:grid; gap:1.1rem; grid-template-columns:repeat(auto-fill,minmax(262px,1fr)); margin:1.6rem 0; }
+.card{
+  display:block; text-decoration:none; color:inherit;
+  background:linear-gradient(180deg, var(--wold-3), var(--wold-2));
+  border:1px solid var(--edge); padding:1.15rem 1.25rem; border-radius:2px;
+  transition:.2s; position:relative; overflow:hidden;
+}
+.card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--brick); opacity:0; transition:.2s; }
+.card:hover{ border-color:var(--gold-soft); transform:translateY(-2px); box-shadow:var(--shadow-soft); }
+.card:hover::before{ opacity:1; }
+.card .cat{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.16em; font-size:0.7rem; color:var(--moss-lit); }
+.card h3{ font-family:var(--disp); font-weight:400; color:var(--vellum); margin:0.3rem 0 0.5rem; font-size:1.5rem; }
+.card p{ margin:0; font-size:0.96rem; color:var(--moon-faint); line-height:1.5; }
+
+/* ------------------------------------------------------------ dossier stat blocks */
+.statgrid{ display:grid; grid-template-columns:repeat(6,1fr); gap:0.7rem; margin:1.4rem 0; }
+@media (max-width:620px){ .statgrid{ grid-template-columns:repeat(3,1fr); } }
+.stat{
+  text-align:center; padding:0.7rem 0.3rem; border:1px solid var(--edge); border-radius:2px;
+  background:rgba(176,134,47,0.06);
+}
+.stat .lbl{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.1em; font-size:0.64rem; color:var(--brick); display:block; }
+.stat .val{ font-family:var(--disp); font-size:1.9rem; color:var(--ink); line-height:1.1; display:block; }
+.stat .mod{ font-family:var(--caps); font-size:0.7rem; color:var(--ink-soft); }
+
+.deflist{ margin:1.2rem 0; }
+.deflist .row{ display:flex; gap:1rem; padding:0.5rem 0; border-bottom:1px solid var(--edge-soft); }
+.deflist .row:last-child{ border-bottom:0; }
+.deflist dt{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.78rem; color:var(--brick); min-width:11rem; flex-shrink:0; padding-top:0.15rem; }
+.deflist dd{ margin:0; color:var(--ink); }
+
+/* saves row */
+.saves{ display:grid; grid-template-columns:repeat(5,1fr); gap:0.6rem; margin:1.2rem 0; }
+@media (max-width:620px){ .saves{ grid-template-columns:repeat(2,1fr); } }
+.save{ text-align:center; padding:0.6rem 0.3rem; border:1px solid var(--edge); border-radius:2px; }
+.save .lbl{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.06em; font-size:0.6rem; color:var(--ink-soft); display:block; }
+.save .val{ font-family:var(--disp); font-size:1.5rem; color:var(--brick-deep); }
+
+/* item / rune cards */
+.itemcard{
+  border:1px solid var(--edge); border-left:3px solid var(--gold); border-radius:2px;
+  padding:0.9rem 1.1rem; margin:0.9rem 0; background:rgba(176,134,47,0.06);
+}
+.itemcard.rune{ border-left-color:var(--toadstool); }
+.itemcard h4{ margin:0 0 0.3rem; font-family:var(--disp); font-family:var(--disp); font-size:1.16rem; color:var(--ink); text-transform:none; letter-spacing:0; font-weight:400; }
+.itemcard .kind{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.12em; font-size:0.64rem; color:var(--brick); }
+.itemcard p{ margin:0.4rem 0 0; font-size:0.95rem; color:var(--ink-2); }
+.itemcard .rmeta{ font-family:var(--caps); font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:0.4rem; }
+
+/* ------------------------------------------------------------ gazetteer list */
+.gaz{ columns:2; column-gap:2.4rem; margin:1.4rem 0; }
+@media (max-width:640px){ .gaz{ columns:1; } }
+.gaz .g{ break-inside:avoid; padding:0.5rem 0; border-bottom:1px solid var(--edge-soft); }
+.gaz .g h4{ margin:0; font-family:var(--disp); font-weight:400; font-size:1.12rem; color:var(--ink); }
+.gaz .g p{ margin:0.15rem 0 0; font-size:0.9rem; color:var(--ink-soft); }
+
+/* ------------------------------------------------------------ notice / callout */
+.notice{
+  background:rgba(124,82,144,0.1); border:1px solid rgba(124,82,144,0.4); border-left:3px solid var(--toadstool);
+  border-radius:2px; padding:0.9rem 1.15rem; margin:1.4rem 0; font-size:0.98rem; color:var(--ink-2);
+}
+.notice b{ color:var(--ink); }
+.notice.on-dark{ color:var(--moon-dim); background:rgba(124,82,144,0.14); }
+.notice.on-dark b{ color:var(--moon); }
+
+/* rules link list */
+.rlist{ display:grid; gap:0.5rem; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin:1.2rem 0; }
+.rlist a{
+  display:block; text-decoration:none; padding:0.6rem 0.85rem; border-radius:2px;
+  border:1px solid var(--edge); background:rgba(77,107,57,0.1);
+  font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.76rem; color:var(--moon-dim);
+  transition:.15s;
+}
+.rlist a:hover{ color:#fff; border-color:var(--moss-lit); background:rgba(77,107,57,0.22); }
+.rlist a::before{ content:"❦ "; color:var(--brick); }
+
+/* chronicle list */
+.chron{ margin:1.6rem 0; }
+.chron .entry{ display:flex; gap:1.2rem; align-items:baseline; padding:1rem 0.4rem; border-bottom:1px solid var(--edge-soft); }
+.chron .no{ font-family:var(--disp); font-size:2rem; color:var(--brick); min-width:2.4ch; text-align:right; }
+.chron .body h3{ font-family:var(--disp); font-weight:400; color:var(--vellum); margin:0 0 0.25rem; font-size:1.3rem; }
+.chron .body .dt{ font-family:var(--caps); font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--moss-lit); }
+.chron .body p{ margin:0.35rem 0 0; color:var(--moon-faint); font-size:0.96rem; }
+.empty{ text-align:center; font-family:var(--disp); font-style:italic; color:var(--moon-faint); font-size:1.15rem; padding:2.4rem 1rem; }
+
+/* breadcrumb */
+.crumb{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.74rem; color:var(--moon-faint); margin:1.6rem 0 0; }
+.crumb a{ color:var(--gold-lit); text-decoration:none; }
+.crumb .sep{ margin:0 0.6em; color:var(--gold); }
+
+/* section intro */
+.intro{ font-family:var(--disp); font-style:italic; color:var(--moon-dim); font-size:1.22rem; max-width:60ch; }
+
+/* footer */
+.foot{ text-align:center; margin-top:4rem; padding:2rem 1rem; color:var(--moon-faint); font-family:var(--caps); text-transform:uppercase; letter-spacing:0.16em; font-size:0.72rem; border-top:1px solid var(--gold-soft); }
+.foot .mark{ color:var(--brick); font-size:1rem; letter-spacing:0.5em; display:block; margin-bottom:0.6rem; }
+
+/* epigraph */
+.epigraph{ font-family:var(--disp); font-style:italic; color:var(--moon-dim); font-size:1.22rem; line-height:1.55; text-align:center; max-width:56ch; margin:0.4rem auto 2rem; padding-bottom:1.4rem; border-bottom:1px solid var(--gold-soft); }
