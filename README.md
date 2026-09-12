@@ -35,7 +35,10 @@ browns, oat-cloth cream, dappled gold), with antique **IM Fell English** display
 
 ## Notes
 
-- `ingest/` is git-ignored (source map, portrait, token, Foundry actor JSON).
+- Source material lives in the sibling support folder, `../return-to-dolmenwood-support/`:
+  `archive/art/` (source map, portrait, token), `archive/foundry-export/` (the Fitchwick
+  actor JSON), `archive/recordings/` and `archive/transcripts/` (Session Zero),
+  `archive/reference/` (the rough character sheets).
 - Character stats come from the Foundry VTT actor export. Fitchwick is a **Human Enchanter,
   level 1, chaotic** (0 XP; 1,750 to reach level 2) — the actor's stale `class: "fighter"`
   field is overridden by the Enchanter *class item*. Starting HP is 7 (max at first level per
