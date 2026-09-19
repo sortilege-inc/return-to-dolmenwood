@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-<title>Fitchwick Peckhold — Character Sheet — Return to Dolmenwood</title>
-<meta name="description" content="The living character sheet for Fitchwick Peckhold — a Human Enchanter of Dolmenwood. Ability checks, saves, skills, runes, and a dice roller for the table.">
+<title>Character Sheets — Return to Dolmenwood</title>
+<meta name="description" content="The living character sheets for the Return to Dolmenwood party — ability checks, saves, skills, spells, weapons, and a dice roller for the table. Switch between characters at the top.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../dolmenwood.css">
@@ -14,7 +14,7 @@
 <body class="play-body">
 <div class="play-bar">
   <span class="brand">Return to Dolmenwood</span>
-  <a href="../character/index.html">‹ Dossier</a>
+  <a href="../character/index.html">‹ Party</a>
   <span class="spacer"></span>
   <a href="../rules/index.html">Rules</a>
   <a href="../index.html">Home</a>
@@ -24,6 +24,8 @@
 
 <script id="sheet-data" type="application/json">
 {
+ "characters": [
+  {
   "id": "fitchwick",
   "name": "Fitchwick Peckhold",
   "kindred": "Human",
@@ -32,6 +34,7 @@
   "alignment": "Chaotic",
   "portrait": "../assets/fitchwick-portrait.webp",
   "token": "../assets/fitchwick-token.webp",
+  "initial": "F",
   "primeAbilities": ["charisma", "intelligence"],
   "hp": 7,
   "ac": 12,
@@ -86,9 +89,160 @@
     { "name": "Clothes, common", "tag": "" },
     { "name": "Torches", "tag": "×3" },
     { "name": "Shovel", "tag": "" },
-    { "name": "Marbles", "tag": "" }
+    { "name": "Marbles", "tag": "" },
+    { "name": "A blood sausage, allegedly made of wyrm’s blood", "tag": "" }
   ],
   "encumbrance": { "max": 40 }
+  },
+
+  {
+  "id": "grendilore",
+  "name": "Grendilore Forlocke",
+  "kindred": "Breggle",
+  "class": "Friar",
+  "level": 1,
+  "alignment": "Neutral",
+  "portrait": null,
+  "token": null,
+  "initial": "G",
+  "primeAbilities": ["intelligence", "wisdom"],
+  "hp": 4,
+  "ac": 10,
+  "attackBonus": 0,
+  "speed": { "round": 40, "exploring": 120, "overland": 24 },
+  "size": "Medium",
+  "languages": ["Liturgic", "Woldish", "Gaffe", "Caprice"],
+  "xp": { "value": 0, "next": 1750 },
+  "loyalty": 7,
+  "abilities": {
+    "strength":     { "score": 8,  "mod": 0 },
+    "intelligence": { "score": 17, "mod": 0 },
+    "wisdom":       { "score": 8,  "mod": 0 },
+    "dexterity":    { "score": 6,  "mod": 0 },
+    "constitution": { "score": 10, "mod": 0 },
+    "charisma":     { "score": 10, "mod": 0 }
+  },
+  "saves": {
+    "doom":  { "target": 11, "desc": "Death, poison, and mortal peril" },
+    "ray":   { "target": 12, "desc": "Rays and blasts of magical energy" },
+    "hold":  { "target": 13, "desc": "Paralysis, petrification, and being held" },
+    "blast": { "target": 16, "desc": "Explosions, dragon-breath, and area blasts" },
+    "spell": { "target": 14, "desc": "Spells, rods, staves, and other magic" }
+  },
+  "skills": {
+    "listen":   { "target": 6, "desc": "Hear faint sounds beyond a door or in the dark" },
+    "search":   { "target": 6, "desc": "Find hidden things and secret constructions" },
+    "survival": { "target": 6, "desc": "Endure and find your way in the wilds" }
+  },
+  "weapons": [
+    { "name": "Staff", "damage": "1d6", "qualities": "Melee", "cost": "0 gp", "weight": "" }
+  ],
+  "prayers": [
+    {
+      "name": "Lesser Healing", "prayerName": "Breath of St Lillibeth", "rank": 1,
+      "range": "The caster or a living creature touched", "duration": "Instant", "heal": "1d6+1",
+      "intro": "The fluttering of doves’ wings and the sweet scent of blossom manifest as the caster recites this prayer. A living subject receives one of the following ministrations:",
+      "effects": [
+        "<strong>Healing:</strong> Restores 1d6+1 Hit Points. This cannot raise the subject’s Hit Points above the normal maximum.",
+        "<strong>Curing paralysis:</strong> Paralysing effects are negated."
+      ]
+    },
+    {
+      "name": "Light", "prayerName": "St Foggarty’s Benediction", "rank": 1,
+      "range": "120′", "duration": "12 Turns",
+      "intro": "A bobbing wisp of light floats from the caster’s palm and manifests as one of the following effects:",
+      "effects": [
+        "<strong>Golden radiance:</strong> Casts holy light in a 15′ radius. The light is sufficient for reading, but is not as bright as daylight. The spell may be cast upon an object, in which case the golden light moves with the object.",
+        "<strong>Blinding a creature:</strong> A flash of divine light blinds a Chaotic creature for the duration. The target may Save Versus Spell to resist. (See Darkness and Blindness.)",
+        "<strong>Cancelling magical darkness:</strong> St Foggarty’s Benediction may cancel a 15′ radius area of magical darkness."
+      ]
+    },
+    {
+      "name": "Rally", "prayerName": "St Jorrael’s Counsel", "rank": 1,
+      "range": "The caster or a creature touched", "duration": "2 Turns",
+      "intro": "The emboldening words of this prayer reverberate in the subject’s mind, calming them and purging them of fear.",
+      "effects": [
+        "<strong>Magically induced fear:</strong> Make a Save Versus Spell with a +1 bonus per Level of the caster to counter magical terror. This applies to effects active when Rally is cast and subsequent effects during the duration."
+      ]
+    }
+  ],
+  "gear": [
+    { "name": "Habit, friar’s", "tag": "worn" },
+    { "name": "Holy water", "tag": "vial" },
+    { "name": "Oil", "tag": "flask" },
+    { "name": "Torches", "tag": "" },
+    { "name": "Rations, preserved", "tag": "1 day" },
+    { "name": "Waterskin", "tag": "" },
+    { "name": "Tinder box", "tag": "" },
+    { "name": "Bedroll", "tag": "" },
+    { "name": "Crowbar", "tag": "" },
+    { "name": "Iron spikes", "tag": "" },
+    { "name": "A folio of pressed sprite-wings", "tag": "" }
+  ],
+  "encumbrance": { "max": 40 }
+  },
+
+  {
+  "id": "longtittle",
+  "name": "Longtittle Snodgrass",
+  "kindred": "Woodgrue",
+  "class": "Hunter",
+  "level": 1,
+  "alignment": "Neutral",
+  "portrait": null,
+  "token": null,
+  "initial": "L",
+  "primeAbilities": ["constitution", "dexterity"],
+  "hp": 8,
+  "ac": 12,
+  "attackBonus": 1,
+  "speed": { "round": 40, "exploring": 120, "overland": 24 },
+  "size": "Small",
+  "languages": ["Woldish", "Sylvan"],
+  "xp": { "value": 0, "next": 2250 },
+  "loyalty": 7,
+  "abilities": {
+    "strength":     { "score": 14, "mod": 0 },
+    "intelligence": { "score": 9,  "mod": 0 },
+    "wisdom":       { "score": 14, "mod": 0 },
+    "dexterity":    { "score": 7,  "mod": 0 },
+    "constitution": { "score": 12, "mod": 0 },
+    "charisma":     { "score": 11, "mod": 0 }
+  },
+  "saves": {
+    "doom":  { "target": 12, "desc": "Death, poison, and mortal peril" },
+    "ray":   { "target": 13, "desc": "Rays and blasts of magical energy" },
+    "hold":  { "target": 14, "desc": "Paralysis, petrification, and being held" },
+    "blast": { "target": 15, "desc": "Explosions, dragon-breath, and area blasts" },
+    "spell": { "target": 16, "desc": "Spells, rods, staves, and other magic" }
+  },
+  "skills": {
+    "listen":    { "target": 6, "desc": "Hear faint sounds beyond a door or in the dark" },
+    "search":    { "target": 6, "desc": "Find hidden things and secret constructions" },
+    "survival":  { "target": 5, "desc": "Endure and find your way in the wilds" },
+    "alertness": { "target": 6, "desc": "Avoid being surprised" },
+    "stalking":  { "target": 6, "desc": "Move unseen and unheard in the wilds" },
+    "tracking":  { "target": 5, "desc": "Follow tracks and trails" }
+  },
+  "weapons": [
+    { "name": "Shortsword", "damage": "1d6", "qualities": "Melee", "cost": "0 gp", "weight": "" },
+    { "name": "Dagger", "damage": "1d6", "qualities": "Melee", "cost": "0 gp", "weight": "" }
+  ],
+  "gear": [
+    { "name": "Leather", "tag": "Armour · AC 12 · worn" },
+    { "name": "Clothes, common", "tag": "" },
+    { "name": "Rations, preserved", "tag": "1 day" },
+    { "name": "Waterskin", "tag": "" },
+    { "name": "Tinder box", "tag": "" },
+    { "name": "Oil", "tag": "flask" },
+    { "name": "Chisel", "tag": "" },
+    { "name": "Grappling hook", "tag": "" },
+    { "name": "Sack", "tag": "" },
+    { "name": "A stack of angry letters, all accusing you of arson", "tag": "" }
+  ],
+  "encumbrance": { "max": 40 }
+  }
+ ]
 }
 </script>
 

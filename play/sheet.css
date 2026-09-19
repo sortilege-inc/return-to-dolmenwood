@@ -23,6 +23,23 @@
 
 .sheet-wrap{ max-width:1180px; margin:0 auto; padding:1.6rem clamp(1rem,4vw,2.4rem) 8rem; }
 
+/* character switcher */
+.char-switch{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.3rem; }
+.cs-tab{
+  flex:1 1 160px; text-align:left; cursor:pointer; transition:.14s;
+  background:linear-gradient(180deg, var(--wold-3), var(--wold-2)); border:1px solid var(--edge); border-radius:4px;
+  padding:0.55rem 0.85rem; display:flex; flex-direction:column; gap:0.05rem; color:inherit; position:relative; overflow:hidden;
+}
+.cs-tab::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--brick); opacity:0; transition:.15s; }
+.cs-tab:hover{ border-color:var(--gold-soft); }
+.cs-tab.on{ border-color:var(--brick); background:rgba(168,64,44,0.14); }
+.cs-tab.on::before{ opacity:1; }
+.cs-tab .cs-name{ font-family:var(--disp); font-size:1.2rem; color:var(--vellum); line-height:1.05; }
+.cs-tab .cs-role{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.6rem; color:var(--moon-faint); }
+.cs-tab.on .cs-role{ color:var(--moss-lit); }
+
+.tok-initial{ display:flex; align-items:center; justify-content:center; font-family:var(--black); font-size:2.8rem; color:var(--gold-soft); background:var(--wold); }
+
 /* two-column layout: sheet + sticky roll rail */
 .sheet-grid{ display:grid; grid-template-columns:1fr 340px; gap:1.6rem; align-items:start; }
 @media (max-width:980px){ .sheet-grid{ grid-template-columns:1fr; } }
@@ -144,6 +161,15 @@
 .rune-card p strong{ color:var(--vellum); }
 .rune-uses{ display:flex; align-items:center; gap:0.5rem; margin-top:0.7rem; font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.66rem; color:var(--moon-faint); }
 .rune-uses b{ color:var(--brick); font-family:var(--disp); font-size:1.2rem; }
+
+/* prayer cards */
+.rune-card.prayer{ border-left-color:var(--gold); background:rgba(176,134,47,0.08); }
+.rune-card.prayer .rk{ color:var(--gold-lit); }
+.rune-card.prayer .pr-meta{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.06em; font-size:0.64rem; color:var(--moon-faint); margin:0.2rem 0 0.5rem; }
+.rune-card.prayer ul{ margin:0.4rem 0 0.2rem; padding-left:1.1rem; }
+.rune-card.prayer li{ margin:0.3rem 0; font-size:0.9rem; color:var(--moon-dim); }
+.rune-card.prayer li strong{ color:var(--vellum); }
+.rune-card.prayer .actbtn{ margin-top:0.8rem; }
 
 .gearlist{ list-style:none; margin:0; padding:0; }
 .gearlist li{ display:flex; justify-content:space-between; gap:1rem; padding:0.4rem 0; border-bottom:1px solid var(--edge-soft); font-size:0.94rem; color:var(--moon-dim); }

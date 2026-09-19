@@ -11,12 +11,28 @@
 (function () {
   "use strict";
 
-  var DATA = JSON.parse(document.getElementById("sheet-data").textContent);
-  var STORE_KEY = "rtd:sheet:" + DATA.id + ":v1";
+  var ALL = JSON.parse(document.getElementById("sheet-data").textContent);
+  var CHARS = ALL.characters || [ALL];
+  var ACTIVE_KEY = "rtd:sheet:active";
   var root = document.getElementById("sheet");
 
+  // per-mount globals, (re)assigned by mount()
+  var DATA, STORE_KEY, state, MELEE_MOD;
+
+  function pickId() {
+    try { var s = localStorage.getItem(ACTIVE_KEY); if (s && CHARS.some(function (c) { return c.id === s; })) return s; } catch (e) {}
+    return CHARS[0].id;
+  }
+  function mount(id) {
+    DATA = CHARS.filter(function (c) { return c.id === id; })[0] || CHARS[0];
+    STORE_KEY = "rtd:sheet:" + DATA.id + ":v1";
+    MELEE_MOD = (DATA.abilities.strength && DATA.abilities.strength.mod) || 0;
+    state = loadState();
+    try { localStorage.setItem(ACTIVE_KEY, DATA.id); } catch (e) {}
+    render();
+  }
+
   /* ---- persistent state ---- */
-  var state = loadState();
   function loadState() {
     var base = {
       hp: DATA.hp,
@@ -56,8 +72,7 @@
     for (var i = 0; i < n; i++) { var r = d(sides); rolls.push(r); sum += r; }
     return { rolls: rolls, sum: sum };
   }
-  // melee attack + damage both apply the Strength modifier (0 for Fitchwick)
-  var MELEE_MOD = (DATA.abilities.strength && DATA.abilities.strength.mod) || 0;
+  // melee attack + damage both apply the Strength modifier (MELEE_MOD is set per character in mount())
   function parseDamage(str) {
     var m = /^\s*(\d*)\s*d\s*(\d+)\s*([+-]\s*\d+)?\s*$/i.exec(str || "");
     if (!m) return { n: 1, sides: 6, mod: 0 };
@@ -69,7 +84,7 @@
   var ABIL_SHORT = { strength: "Str", intelligence: "Int", wisdom: "Wis", dexterity: "Dex", constitution: "Con", charisma: "Cha" };
   var SAVE_ORDER = ["doom", "ray", "hold", "blast", "spell"];
   var SAVE_LABEL = { doom: "Doom", ray: "Ray", hold: "Hold", blast: "Blast", spell: "Spell" };
-  var SKILL_LABEL = { listen: "Listen", search: "Search", survival: "Survival", detectMagic: "Detect Magic" };
+  var SKILL_LABEL = { listen: "Listen", search: "Search", survival: "Survival", detectMagic: "Detect Magic", alertness: "Alertness", stalking: "Stalking", tracking: "Tracking" };
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
   function signed(n) { return (n >= 0 ? "+" : "") + n; }
@@ -121,6 +136,24 @@
         '<button class="step" data-rune-inc="' + i + '">+</button></div></div>';
     }).join("");
 
+    var prayerCards = (DATA.prayers || []).map(function (pr, i) {
+      return '<div class="rune-card prayer">' +
+        '<span class="rk">Holy Prayer · Rank ' + pr.rank + ' · ' + esc(pr.prayerName) + '</span>' +
+        '<h3>' + esc(pr.name) + '</h3>' +
+        '<p class="pr-meta"><strong>Range:</strong> ' + esc(pr.range) + ' &nbsp;·&nbsp; <strong>Duration:</strong> ' + esc(pr.duration) + '</p>' +
+        (pr.intro ? '<p>' + pr.intro + '</p>' : '') +
+        '<ul>' + pr.effects.map(function (e) { return '<li>' + e + '</li>'; }).join("") + '</ul>' +
+        (pr.heal ? '<button class="actbtn alt" data-heal="' + i + '">🕊 Healing — roll ' + esc(pr.heal) + '</button>' : '') +
+        '</div>';
+    }).join("");
+
+    var switchTabs = CHARS.map(function (c) {
+      var on = c.id === DATA.id;
+      return '<button class="cs-tab' + (on ? " on" : "") + '" data-char="' + c.id + '"' + (on ? ' aria-current="true"' : '') + '>' +
+        '<span class="cs-name">' + esc(c.name.split(" ")[0]) + '</span>' +
+        '<span class="cs-role">' + esc(c.kindred) + ' ' + esc(c.class) + '</span></button>';
+    }).join("");
+
     var gearRows = DATA.gear.map(function (g) {
       return '<li><span>' + esc(g.name) + '</span>' + (g.tag ? '<span class="tag">' + esc(g.tag) + '</span>' : '') + '</li>';
     }).join("");
@@ -130,9 +163,14 @@
         '<input type="number" data-coin="' + c + '" value="' + (state.coins[c] || 0) + '" min="0"></div>';
     }).join("");
 
+    var tokEl = DATA.token
+      ? '<img class="tok" src="' + DATA.token + '" alt="' + esc(DATA.name) + '">'
+      : '<div class="tok tok-initial">' + esc(DATA.initial || DATA.name.charAt(0)) + '</div>';
+
     root.innerHTML =
+      (CHARS.length > 1 ? '<div class="char-switch">' + switchTabs + '</div>' : '') +
       '<div class="sheet-head">' +
-        '<img class="tok" src="' + DATA.token + '" alt="' + esc(DATA.name) + '">' +
+        tokEl +
         '<div><h1>' + esc(DATA.name) + '</h1>' +
           '<div class="sub">' + esc(DATA.kindred) + ' ' + esc(DATA.class) + ' · Level ' + DATA.level +
           ' · <span class="align">' + esc(DATA.alignment) + '</span></div></div>' +
@@ -177,9 +215,15 @@
           '<h2 style="border:0;margin:1.1rem 0 .7rem;padding:0">Skills <span class="hint">tap — roll d6, succeed on ≤ target</span></h2>' +
           '<div class="btn-grid skills-grid">' + skillBtns + '</div></div>' +
 
+        /* prayers */
+        (prayerCards ? '<div class="sc"><h2>Holy Prayers <span class="hint">verbatim from Dolmenwood</span></h2>' + prayerCards + '</div>' : '') +
+
         /* runes */
         (runeCards ? '<div class="sc"><h2>Runes &amp; Sigils</h2>' + runeCards +
           '<button class="actbtn alt" id="runeRest" style="margin-top:.9rem">☾ Rest — clear rune uses</button></div>' : '') +
+
+        /* rest (for characters without runes) */
+        (!runeCards ? '<div class="sc"><button class="actbtn alt" id="restBtn">☾ Rest — restore HP &amp; reset the day</button></div>' : '') +
 
         /* gear + coin */
         '<div class="sc"><h2>Gear <span class="hint">capacity ' + DATA.encumbrance.max + '</span></h2>' +
@@ -294,6 +338,15 @@
     setReadout(w.name + " Damage", tot, detail, null);
     pushLog(w.name + " damage (" + w.damage + (extra ? signed(extra) : "") + ")", String(tot), "");
   }
+  function rollPrayerHeal(pi) {
+    var pr = (DATA.prayers || [])[pi]; if (!pr || !pr.heal) return;
+    var p = parseDamage(pr.heal);
+    var res = rollN(p.n, p.sides);
+    var tot = res.sum + p.mod;
+    var detail = (p.n > 1 ? "[" + res.rolls.join(", ") + "]" : pr.heal) + " · " + esc(pr.prayerName);
+    setReadout(pr.name + " — Healing", "+" + tot, detail, null);
+    pushLog(pr.name + " heal (" + pr.heal + ")", "+" + tot, "hit");
+  }
   function setEquipped(i) {
     state.equipped = (state.equipped === i) ? null : i;
     save();
@@ -349,6 +402,11 @@
   }
 
   function bind() {
+    // character switcher
+    root.querySelectorAll("[data-char]").forEach(function (btn) {
+      btn.addEventListener("click", function () { mount(btn.getAttribute("data-char")); });
+    });
+
     // HP
     document.getElementById("hpDown").onclick = function () { state.hp = Math.max(0, state.hp - 1); save(); updateHpBar(); };
     document.getElementById("hpUp").onclick = function () { state.hp = Math.min(DATA.hp, state.hp + 1); save(); updateHpBar(); };
@@ -403,14 +461,23 @@
       state.hp = DATA.hp; state.exhaustion = 0;
       save(); render();
     };
+    var rb = document.getElementById("restBtn");
+    if (rb) rb.onclick = function () {
+      state.hp = DATA.hp; state.exhaustion = 0;
+      save(); render();
+    };
+
+    // prayer healing
+    root.querySelectorAll("[data-heal]").forEach(function (b) {
+      b.addEventListener("click", function () { rollPrayerHeal(parseInt(b.getAttribute("data-heal"), 10)); });
+    });
 
     // log clear + reset
     document.getElementById("logClear").onclick = function () { state.log = []; save(); renderLog(); };
     document.getElementById("resetAll").onclick = function () {
-      if (!confirm("Reset all trackers (HP, exhaustion, coin, rune uses, and the roll log) to their starting values?")) return;
+      if (!confirm("Reset " + DATA.name + "’s trackers (HP, exhaustion, coin, rune uses, and the roll log) to their starting values?")) return;
       localStorage.removeItem(STORE_KEY);
-      state = loadState();
-      render();
+      mount(DATA.id);
     };
   }
   function syncRune(i) {
@@ -418,5 +485,5 @@
     if (el) el.textContent = state.runeUses[i] || 0;
   }
 
-  render();
+  mount(pickId());
 })();
