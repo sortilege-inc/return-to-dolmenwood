@@ -364,6 +364,19 @@ blockquote{
 .chron .body p{ margin:0.35rem 0 0; color:var(--moon-faint); font-size:0.96rem; }
 .empty{ text-align:center; font-family:var(--disp); font-style:italic; color:var(--moon-faint); font-size:1.15rem; padding:2.4rem 1rem; }
 
+/* chronicle — session report */
+.session-no{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.2em; font-size:0.74rem; color:var(--brick); }
+.session-date{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.72rem; color:var(--moon-faint); }
+.roster{ display:grid; gap:0.5rem; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin:1.2rem 0 1.6rem; }
+.roster .rmb{ border:1px solid var(--edge); border-left:3px solid var(--gold); border-radius:2px; padding:0.55rem 0.8rem; background:rgba(176,134,47,0.06); }
+.roster .rmb .nm{ font-family:var(--disp); font-size:1.14rem; color:var(--ink); }
+.roster .rmb .rl{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.62rem; color:var(--brick); display:block; }
+.roster .rmb .pl{ font-style:italic; color:var(--ink-soft); font-size:0.86rem; }
+.ledger{ display:grid; gap:0.6rem; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); margin:1.4rem 0; }
+.ledger .lg{ text-align:center; border:1px solid var(--edge); border-radius:2px; padding:0.7rem 0.4rem; background:rgba(176,134,47,0.05); }
+.ledger .lg .lgl{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.08em; font-size:0.6rem; color:var(--brick); display:block; }
+.ledger .lg .lgv{ font-family:var(--disp); font-size:1.5rem; color:var(--ink); line-height:1.1; }
+
 /* breadcrumb */
 .crumb{ font-family:var(--caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.74rem; color:var(--moon-faint); margin:1.6rem 0 0; }
 .crumb a{ color:var(--gold-lit); text-decoration:none; }
